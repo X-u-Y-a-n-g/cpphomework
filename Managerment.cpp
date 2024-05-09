@@ -56,7 +56,7 @@ void Managerment::display(string kkk)
 	
 }
 
-//void Managerment::drawBackground()
-//{
-//	::putimage(0, 0, &m_bk);
-//}
+void Managerment::drawBackground()
+{
+	::putimage(0, 0, &m_bk);
+}
