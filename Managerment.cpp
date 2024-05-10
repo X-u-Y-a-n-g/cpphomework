@@ -31,7 +31,51 @@ Managerment::Managerment()
 
 void Managerment::run()
 {
-	
+	BeginBatchDraw();
+	int op = Menu;
+	Window::clear();
+	while (true)
+	{
+		drawBackground();
+		if (Window::hasMsg())
+		{
+
+			m_msg = Window::getMsg();
+			switch (m_msg.message)
+			{
+			case WM_KEYDOWN://按下按键
+				//按esc退出返回主界面
+				if (m_msg.vkcode == VK_ESCAPE)
+				{
+					op = Menu;
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		char a[1000]; string kkk;
+		cout << "run while" << endl;
+		switch (op)
+		{
+		case Menu:
+			op = menu();
+			cout << "kkk";
+			break;
+		case Managerment::Display:
+			InputBox(a, 1000, "请输入文件地址\n若为空自动调用摄像头", "文件来源");
+			kkk = a;
+			display(kkk);
+			op = Menu;
+			break;
+		default:
+			exit(666);
+			break;
+		}
+		Window::flushDraw();
+
+	}
+	Window::endDraw();
 }
 
 
