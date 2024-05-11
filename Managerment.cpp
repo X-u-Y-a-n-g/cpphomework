@@ -97,7 +97,65 @@ int Managerment::menu()
 
 void Managerment::display(string kkk)
 {
-	
+	initgraph(960, 640);    //创建窗口
+	VideoCapture video(kkk);    //打开视频
+	//打开音频
+	const char* str = "@#$%&!=+*,';`.";  //替换像素点符号
+	int len = strlen(str);
+	Mat frame;  //获取图像
+	Mat show;   //展示图像
+	string text;
+	int index = 0;
+	BeginBatchDraw();
+	//调整字体大小
+	settextstyle(12, 0, "楷体");
+	while (1)
+	{
+		video >> frame;     //获取每一帧图像
+		if (frame.empty())  //结束判断
+		{
+			break;
+		}
+		cvtColor(frame, frame, COLOR_BGR2GRAY);     //转换为灰度图
+		resize(frame, show, Size(300, 150));    //缩放图像
+		resize(frame, frame, Size(150, 50));   //二次缩放
+
+		//获取每一个像素点
+		for (int x = 0; x < frame.rows; x++)
+		{
+			for (int y = 0; y < frame.cols; y++)
+			{
+				int color = frame.at<uchar>(x, y);
+				index = color / 256.0 * len;
+				text += str[index];
+			}
+			//输出每一行
+			outtextxy(0, x * textheight(str[index]), text.c_str());
+			text.clear();
+		}
+
+		imshow("字符画", show);
+		int userkey = waitKey(1);
+		//暂停
+		if (userkey == ' ')
+		{
+			userkey = waitKey(0);
+			if (userkey == ' ')
+			{
+				continue;
+			}
+		}
+		if (userkey == 27)
+		{
+
+			return;
+		}
+		FlushBatchDraw();
+	}
+
+	EndBatchDraw();
+	closegraph();
+	return;
 }
 
 void Managerment::drawBackground()
